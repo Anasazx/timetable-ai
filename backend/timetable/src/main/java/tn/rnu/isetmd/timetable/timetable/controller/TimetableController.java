@@ -1,6 +1,7 @@
 package tn.rnu.isetmd.timetable.timetable.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import tn.rnu.isetmd.timetable.job.dto.ExtractionJobStatusResponse;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -24,17 +26,23 @@ public class TimetableController {
     private final ExtractionJobService extractionJobService;
     private final ObjectMapper objectMapper;
 
-    @PostMapping(
-            value = "/extract",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(value = "/extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ExtractionJobResponse> extractTimetable(
-            @RequestParam("image") MultipartFile image
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("semesterStart")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate semesterStart,
+            @RequestParam("semesterEnd")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate semesterEnd
     ) throws IOException {
 
         ExtractionJob job =
-                extractionJobService.createJob(image);
+                extractionJobService.createJob(
+                        image,
+                        semesterStart,
+                        semesterEnd
+                );
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)

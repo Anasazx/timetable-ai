@@ -5,6 +5,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import tn.rnu.isetmd.timetable.ai.dto.AiTimetableEntry;
 import tn.rnu.isetmd.timetable.ai.dto.AiTimetableResponse;
 import tools.jackson.databind.ObjectMapper;
 
@@ -65,10 +66,7 @@ public class LmStudioService implements AiService {
 
             String content = extractContent(response);
 
-            return objectMapper.readValue(
-                    cleanJson(content),
-                    AiTimetableResponse.class
-            );
+            return parseTimetableResponse(content);
 
         } catch (Exception e) {
             throw new RuntimeException(
@@ -146,5 +144,35 @@ public class LmStudioService implements AiService {
         }
 
         return cleaned.trim();
+    }
+
+    private AiTimetableResponse parseTimetableResponse(
+            String content
+    ) throws Exception {
+
+        String json = cleanJson(content);
+
+        if (json.trim().startsWith("[")) {
+
+            List<AiTimetableEntry> entries =
+                    objectMapper.readValue(
+                            json,
+                            objectMapper.getTypeFactory()
+                                    .constructCollectionType(
+                                            List.class,
+                                            AiTimetableEntry.class
+                                    )
+                    );
+
+            return new AiTimetableResponse(
+                    entries,
+                    List.of()
+            );
+        }
+
+        return objectMapper.readValue(
+                json,
+                AiTimetableResponse.class
+        );
     }
 }

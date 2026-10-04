@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,6 +31,12 @@ public class ExtractionJob {
     private String imagePath;
 
     @Column(nullable = false)
+    private LocalDate semesterStart;
+
+    @Column(nullable = false)
+    private LocalDate semesterEnd;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
@@ -37,10 +44,14 @@ public class ExtractionJob {
 
     public ExtractionJob(
             UUID id,
-            String imagePath
+            String imagePath,
+            LocalDate semesterStart,
+            LocalDate semesterEnd
     ) {
         this.id = id;
         this.imagePath = imagePath;
+        this.semesterStart = semesterStart;
+        this.semesterEnd = semesterEnd;
         this.status = ExtractionJobStatus.PROCESSING;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();

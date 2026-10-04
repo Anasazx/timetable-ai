@@ -1,4 +1,7 @@
 package tn.rnu.isetmd.timetable.ai.dto;
 
-public class AiTimetableResponse {
-}
+import java.util.List;
+public record AiTimetableResponse(
+        List<AiTimetableEntry> entries,
+        List<String> questions_for_user
+) {}

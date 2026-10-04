@@ -7,6 +7,7 @@ import tn.rnu.isetmd.timetable.storage.ImageStorageService;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -17,32 +18,26 @@ public class ExtractionJobService {
     private final ImageStorageService imageStorageService;
     private final ExtractionJobWorker jobWorker;
 
-    public ExtractionJob createJob(
-            MultipartFile image
-    ) throws IOException {
+    public ExtractionJob createJob(MultipartFile image, LocalDate semesterStart, LocalDate semesterEnd) throws IOException {
 
         UUID jobId = UUID.randomUUID();
 
-        Path imagePath =
-                imageStorageService.save(
-                        jobId,
-                        image
-                );
+        Path imagePath = imageStorageService.save(jobId, image);
 
-        ExtractionJob job =
-                new ExtractionJob(
-                        jobId,
-                        imagePath.toString()
-                );
+        ExtractionJob job = new ExtractionJob(jobId, imagePath.toString(), semesterStart, semesterEnd);
 
         jobRepository.save(job);
 
         jobWorker.process(
+
                 jobId,
+
                 imagePath
+
         );
 
         return job;
+
     }
 
     public ExtractionJob getJob(UUID jobId) {
