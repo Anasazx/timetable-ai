@@ -29,3 +29,6 @@ frontend/.angular/
 
 # Logs
 *.log
+
+
+backend/timetable/target/
