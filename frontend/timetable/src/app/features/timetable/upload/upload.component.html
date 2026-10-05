@@ -1,0 +1,190 @@
+<div class="page">
+
+  <main class="container">
+
+    <header class="header">
+
+      <div class="logo">
+        Timetable AI
+      </div>
+
+      <h1>
+        Turn your timetable into a calendar
+      </h1>
+
+      <p>
+        Upload your university timetable and let AI extract
+        your classes automatically.
+      </p>
+
+    </header>
+
+
+    <section class="card">
+
+      <h2>
+        Upload timetable
+      </h2>
+
+      <p class="description">
+        Upload a clear image of your timetable.
+      </p>
+
+
+      <!-- Upload zone -->
+
+      <label
+        class="upload-zone"
+        [class.dragging]="isDragging"
+        [class.has-file]="selectedFile"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          (change)="onFileSelected($event)"
+        />
+
+
+        @if (!selectedFile) {
+
+          <div class="upload-content">
+
+            <div class="upload-icon">
+              ↑
+            </div>
+
+            <strong>
+              Choose an image
+            </strong>
+
+            <span>
+              or drag and drop it here
+            </span>
+
+            <small>
+              PNG, JPG or WEBP · Maximum 20 MB
+            </small>
+
+          </div>
+
+        }
+
+
+        @if (selectedFile && previewUrl) {
+
+          <div class="preview">
+
+            <img
+              [src]="previewUrl"
+              alt="Timetable preview"
+            />
+
+            <div class="file-info">
+
+              <strong>
+                {{ selectedFile.name }}
+              </strong>
+
+              <span>
+                {{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB
+              </span>
+
+            </div>
+
+          </div>
+
+        }
+
+      </label>
+
+
+      @if (selectedFile) {
+
+        <button
+          type="button"
+          class="remove-button"
+          (click)="removeFile()"
+        >
+          Remove image
+        </button>
+
+      }
+
+
+      <!-- Semester -->
+
+      <div class="dates">
+
+        <div class="field">
+
+          <label for="semesterStart">
+            Semester starts
+          </label>
+
+          <input
+            id="semesterStart"
+            type="date"
+            [(ngModel)]="semesterStart"
+          />
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="semesterEnd">
+            Semester ends
+          </label>
+
+          <input
+            id="semesterEnd"
+            type="date"
+            [(ngModel)]="semesterEnd"
+          />
+
+        </div>
+
+      </div>
+
+
+      @if (errorMessage) {
+
+        <div class="error">
+          {{ errorMessage }}
+        </div>
+
+      }
+
+
+      <button
+        type="button"
+        class="submit-button"
+        [disabled]="!canSubmit()"
+        (click)="submit()"
+      >
+
+        @if (!isUploading) {
+          Extract timetable
+        }
+
+        @if (isUploading) {
+          Processing...
+        }
+
+      </button>
+
+
+      <p class="privacy">
+        Your timetable is processed locally by the application.
+      </p>
+
+    </section>
+
+  </main>
+
+</div>

@@ -1,0 +1,450 @@
+<div class="page">
+
+  <main class="container">
+
+    <header class="header">
+
+      <div class="logo">
+        Timetable AI
+      </div>
+
+      @if (status?.status === 'PROCESSING') {
+
+        <h1>
+          Analyzing your timetable
+        </h1>
+
+        <p>
+          AI is extracting your classes. This may take a moment.
+        </p>
+
+      }
+
+      @if (status?.status === 'NEEDS_CONFIRMATION') {
+
+        <h1>
+          Review your timetable
+        </h1>
+
+        <p>
+          Check the extracted classes before adding them to your calendar.
+        </p>
+
+      }
+
+      @if (status?.status === 'COMPLETED') {
+
+        <h1>
+          Your timetable is ready
+        </h1>
+
+        <p>
+          Your calendar has been generated successfully.
+        </p>
+
+      }
+
+    </header>
+
+
+    <!-- Processing -->
+
+    @if (status?.status === 'PROCESSING') {
+
+      <section class="card processing">
+
+        <div class="spinner"></div>
+
+        <h2>
+          Extracting classes...
+        </h2>
+
+        <p>
+          Reading your timetable and identifying subjects,
+          teachers, rooms and times.
+        </p>
+
+        <div class="job-id">
+          Job: {{ jobId }}
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- Failed -->
+
+    @if (status?.status === 'FAILED' || errorMessage) {
+
+      <section class="card error-card">
+
+        <div class="error-icon">
+          !
+        </div>
+
+        <h2>
+          Something went wrong
+        </h2>
+
+        <p>
+          {{ errorMessage }}
+        </p>
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="backToUpload()"
+        >
+          Try again
+        </button>
+
+      </section>
+
+    }
+
+
+    <!-- Review -->
+
+    @if (status?.status === 'NEEDS_CONFIRMATION') {
+
+      <section class="card">
+
+        <div class="section-header">
+
+          <div>
+            <h2>
+              {{ entries.length }} classes found
+            </h2>
+
+            <p>
+              Review the extracted information and correct anything necessary.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="add-button"
+            (click)="addEntry()"
+          >
+            + Add class
+          </button>
+
+        </div>
+
+
+        <!-- Errors -->
+
+        @if (errors.length > 0) {
+
+          <div class="issues error-issues">
+
+            <strong>
+              {{ errors.length }} issue(s) need attention
+            </strong>
+
+            @for (issue of errors; track $index) {
+
+              <div class="issue">
+
+                <span>
+                  Entry {{ issue.entryIndex + 1 }}
+                </span>
+
+                {{ issue.message }}
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+        <!-- Warnings -->
+
+        @if (warnings.length > 0) {
+
+          <div class="issues warning-issues">
+
+            <strong>
+              {{ warnings.length }} warning(s)
+            </strong>
+
+            @for (issue of warnings; track $index) {
+
+              <div class="issue">
+
+                <span>
+                  Entry {{ issue.entryIndex + 1 }}
+                </span>
+
+                {{ issue.message }}
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+
+        <!-- Entries -->
+
+        <div class="entries">
+
+          @for (entry of entries; track $index) {
+
+            <article
+              class="entry"
+              [class.has-issue]="hasIssueForEntry($index)"
+            >
+
+              <div class="entry-number">
+                {{ $index + 1 }}
+              </div>
+
+
+              <div class="entry-fields">
+
+                <div class="field">
+
+                  <label>
+                    Day
+                  </label>
+
+                  <select [(ngModel)]="entry.day">
+
+                    <option value="Lundi">Monday</option>
+                    <option value="Mardi">Tuesday</option>
+                    <option value="Mercredi">Wednesday</option>
+                    <option value="Jeudi">Thursday</option>
+                    <option value="Vendredi">Friday</option>
+                    <option value="Samedi">Saturday</option>
+                    <option value="Dimanche">Sunday</option>
+
+                  </select>
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Start
+                  </label>
+
+                  <input
+                    type="time"
+                    [(ngModel)]="entry.start_time"
+                  />
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    End
+                  </label>
+
+                  <input
+                    type="time"
+                    [(ngModel)]="entry.end_time"
+                  />
+
+                </div>
+
+
+                <div class="field field-wide">
+
+                  <label>
+                    Subject
+                  </label>
+
+                  <input
+                    type="text"
+                    [(ngModel)]="entry.subject"
+                    placeholder="Subject"
+                  />
+
+                </div>
+
+
+                <div class="field field-wide">
+
+                  <label>
+                    Teacher
+                  </label>
+
+                  <input
+                    type="text"
+                    [(ngModel)]="entry.teacher"
+                    placeholder="Teacher"
+                  />
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Room
+                  </label>
+
+                  <input
+                    type="text"
+                    [(ngModel)]="entry.room"
+                    placeholder="Room"
+                  />
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Type
+                  </label>
+
+                  <input
+                    type="text"
+                    [(ngModel)]="entry.type"
+                    placeholder="cours"
+                  />
+
+                </div>
+
+
+                <div class="field">
+
+                  <label>
+                    Group
+                  </label>
+
+                  <input
+                    type="text"
+                    [(ngModel)]="entry.group"
+                    placeholder="Optional"
+                  />
+
+                </div>
+
+              </div>
+
+
+              <div class="entry-actions">
+
+                @if (getIssuesForEntry($index).length > 0) {
+
+                  @for (
+                    issue of getIssuesForEntry($index);
+                    track $index
+                    ) {
+
+                    <div
+                      class="entry-issue"
+                      [class.warning]="issue.severity === 'WARNING'"
+                    >
+                      {{ issue.message }}
+                    </div>
+
+                  }
+
+                }
+
+                <button
+                  type="button"
+                  class="delete-button"
+                  (click)="removeEntry($index)"
+                >
+                  Remove
+                </button>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+
+        <div class="actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="backToUpload()"
+          >
+            Start over
+          </button>
+
+          <button
+            type="button"
+            class="confirm-button"
+            [disabled]="isConfirming"
+            (click)="confirm()"
+          >
+
+            @if (!isConfirming) {
+              Confirm timetable
+            }
+
+            @if (isConfirming) {
+              Validating...
+            }
+
+          </button>
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- Completed -->
+
+    @if (status?.status === 'COMPLETED') {
+
+      <section class="card completed">
+
+        <div class="success-icon">
+          ✓
+        </div>
+
+        <h2>
+          Timetable confirmed
+        </h2>
+
+        <p>
+          Your timetable has been validated and your recurring
+          calendar is ready.
+        </p>
+
+        <button
+          type="button"
+          class="confirm-button"
+          (click)="downloadCalendar()"
+        >
+          Download calendar
+        </button>
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="backToUpload()"
+        >
+          Create another timetable
+        </button>
+
+      </section>
+
+    }
+
+  </main>
+
+</div>

@@ -30,6 +30,9 @@ public class ExtractionJob {
     @Column(nullable = false)
     private String imagePath;
 
+    @Column(columnDefinition = "TEXT")
+    private String validationIssuesJson;
+
     @Column(nullable = false)
     private LocalDate semesterStart;
 
@@ -60,6 +63,15 @@ public class ExtractionJob {
     public void complete(String resultJson) {
         this.status = ExtractionJobStatus.COMPLETED;
         this.resultJson = resultJson;
+        this.validationIssuesJson = null;
+        this.errorMessage = null;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void needsConfirmation(String resultJson, String validationIssuesJson) {
+        this.status = ExtractionJobStatus.NEEDS_CONFIRMATION;
+        this.resultJson = resultJson;
+        this.validationIssuesJson = validationIssuesJson;
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -68,4 +80,5 @@ public class ExtractionJob {
         this.errorMessage = errorMessage;
         this.updatedAt = LocalDateTime.now();
     }
+
 }
