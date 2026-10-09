@@ -4,8 +4,7 @@
 
 .page {
   min-height: 100vh;
-  background: #f7f7f5;
-  padding: 60px 20px;
+  padding: 42px 20px 72px;
 }
 
 .container {
@@ -16,41 +15,71 @@
 
 .header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 38px;
 }
 
 .logo {
-  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 32px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+
+.logo em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.logo-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--ink);
+  color: white;
+  font-size: 15px;
+  box-shadow: 0 5px 12px rgba(24, 34, 48, 0.16);
+}
+
+.eyebrow {
+  margin-bottom: 11px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 42px;
-  letter-spacing: -0.03em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(34px, 5vw, 50px);
+  letter-spacing: -0.055em;
 }
 
 .header p {
-  margin: 14px auto 0;
-  color: #666;
+  margin: 15px auto 0;
+  color: var(--muted);
   font-size: 16px;
   line-height: 1.6;
 }
 
 .card {
-  background: white;
-  border: 1px solid #e7e7e4;
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+  background: var(--surface);
+  border: 1px solid rgba(229, 233, 240, 0.9);
+  border-radius: 24px;
+  padding: clamp(22px, 4vw, 38px);
+  box-shadow: 0 24px 70px rgba(37, 50, 79, 0.08);
 }
 
 .processing,
 .completed,
 .error-card {
-  max-width: 600px;
+  max-width: 610px;
   margin: 0 auto;
   text-align: center;
 }
@@ -59,34 +88,34 @@
 .completed h2,
 .error-card h2 {
   margin: 20px 0 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.03em;
 }
 
 .processing p,
 .completed p,
 .error-card p {
-  color: #666;
+  color: var(--muted);
   line-height: 1.6;
 }
 
 .spinner {
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   margin: 10px auto;
-  border: 4px solid #e5e5e2;
-  border-top-color: #111;
+  border: 4px solid #e7eaf2;
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .job-id {
   margin-top: 24px;
-  color: #999;
+  color: #9aa3b2;
   font-family: monospace;
   font-size: 12px;
 }
@@ -101,40 +130,50 @@
 
 .section-header h2 {
   margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 22px;
+  letter-spacing: -0.03em;
 }
 
 .section-header p {
   margin: 6px 0 0;
-  color: #777;
+  color: var(--muted);
+  font-size: 14px;
 }
 
-.add-button {
-  border: 1px solid #ddd;
+.add-button,
+.secondary-button {
+  border: 1px solid var(--line);
   background: white;
-  border-radius: 9px;
+  color: var(--ink);
+  border-radius: 10px;
   padding: 10px 14px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  transition: 0.2s ease;
 }
 
-.add-button:hover {
-  background: #f7f7f5;
+.add-button:hover,
+.secondary-button:hover {
+  border-color: #c6cde0;
+  background: #f8f9fd;
 }
 
 .issues {
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 13px;
+  padding: 15px 17px;
   margin-bottom: 18px;
 }
 
 .error-issues {
-  background: #fff1f1;
+  border: 1px solid #ffd5d5;
+  background: #fff6f6;
   color: #9f1d1d;
 }
 
 .warning-issues {
-  background: #fff8e7;
+  border: 1px solid #ffe6ae;
+  background: #fffaf0;
   color: #855d00;
 }
 
@@ -144,13 +183,13 @@
 }
 
 .issue {
-  font-size: 13px;
   margin-top: 6px;
+  font-size: 13px;
 }
 
 .issue span {
-  font-weight: 600;
   margin-right: 8px;
+  font-weight: 700;
 }
 
 .entries {
@@ -160,12 +199,18 @@
 }
 
 .entry {
-  border: 1px solid #e5e5e2;
-  border-radius: 14px;
-  padding: 18px;
   display: grid;
   grid-template-columns: 36px 1fr;
   gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 18px;
+  transition: 0.2s ease;
+}
+
+.entry:focus-within {
+  border-color: #b7b5f7;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
 }
 
 .entry.has-issue {
@@ -173,15 +218,16 @@
 }
 
 .entry-number {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #f1f1ee;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--accent-soft);
+  color: var(--accent);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .entry-fields {
@@ -201,26 +247,27 @@
 }
 
 .field label {
+  color: var(--muted);
   font-size: 11px;
-  color: #777;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .field input,
 .field select {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #dcdcd8;
-  border-radius: 8px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
   padding: 9px 10px;
-  font: inherit;
-  background: white;
+  background: #fcfdff;
+  color: var(--ink);
 }
 
 .field input:focus,
 .field select:focus {
-  outline: 2px solid #222;
-  outline-offset: -1px;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  outline: none;
 }
 
 .entry-actions {
@@ -232,14 +279,14 @@
 
 .entry-issue {
   padding: 8px 10px;
-  border-radius: 7px;
-  background: #fff1f1;
+  border-radius: 8px;
+  background: #fff6f6;
   color: #a32626;
   font-size: 12px;
 }
 
 .entry-issue.warning {
-  background: #fff8e7;
+  background: #fffaf0;
   color: #855d00;
 }
 
@@ -248,7 +295,7 @@
   border: none;
   background: none;
   padding: 4px 0;
-  color: #999;
+  color: #9aa3b2;
   cursor: pointer;
   font-size: 12px;
 }
@@ -263,53 +310,41 @@
   gap: 12px;
   margin-top: 28px;
   padding-top: 24px;
-  border-top: 1px solid #eee;
-}
-
-.confirm-button,
-.secondary-button {
-  border-radius: 10px;
-  padding: 12px 18px;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
+  border-top: 1px solid #edf0f5;
 }
 
 .confirm-button {
   border: none;
-  background: #111;
+  border-radius: 10px;
+  padding: 12px 18px;
+  background: var(--accent);
   color: white;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.2);
+  transition: 0.2s ease;
 }
 
 .confirm-button:hover:not(:disabled) {
-  background: #333;
+  background: var(--accent-dark);
+  transform: translateY(-1px);
 }
 
 .confirm-button:disabled {
-  opacity: 0.4;
+  opacity: 0.45;
   cursor: not-allowed;
-}
-
-.secondary-button {
-  border: 1px solid #ddd;
-  background: white;
-  color: #222;
-}
-
-.secondary-button:hover {
-  background: #f7f7f5;
 }
 
 .success-icon,
 .error-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto;
+  border-radius: 19px;
+  font-size: 27px;
   font-weight: 700;
 }
 
@@ -323,62 +358,28 @@
   color: #b42318;
 }
 
-.completed .confirm-button {
-  display: block;
-  width: 100%;
-  margin-top: 24px;
-}
-
+.completed .confirm-button,
 .completed .secondary-button {
   display: block;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 14px;
+}
+
+.completed .confirm-button {
+  margin-top: 24px;
 }
 
 @media (max-width: 850px) {
-
-  .entry-fields {
-    grid-template-columns: 1fr 1fr;
-  }
+  .entry-fields { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 600px) {
-
-  .page {
-    padding: 30px 14px;
-  }
-
-  .header h1 {
-    font-size: 32px;
-  }
-
-  .card {
-    padding: 20px;
-  }
-
-  .section-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .entry {
-    grid-template-columns: 1fr;
-  }
-
-  .entry-actions {
-    grid-column: 1;
-  }
-
-  .entry-fields {
-    grid-template-columns: 1fr;
-  }
-
-  .actions {
-    flex-direction: column-reverse;
-  }
-
+  .page { padding: 30px 14px 52px; }
+  .section-header { align-items: flex-start; flex-direction: column; }
+  .entry { grid-template-columns: 1fr; }
+  .entry-actions { grid-column: 1; }
+  .entry-fields { grid-template-columns: 1fr; }
+  .actions { flex-direction: column-reverse; }
   .confirm-button,
-  .secondary-button {
-    width: 100%;
-  }
+  .secondary-button { width: 100%; }
 }
