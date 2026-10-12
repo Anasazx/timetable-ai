@@ -34,16 +34,12 @@
   font-style: normal;
 }
 
-.logo-mark {
-  display: grid;
-  place-items: center;
+.brand-logo {
+  display: block;
   width: 30px;
   height: 30px;
-  border-radius: 9px;
-  background: var(--ink);
-  color: white;
-  font-size: 15px;
-  box-shadow: 0 5px 12px rgba(24, 34, 48, 0.16);
+  border-radius: 8px;
+  object-fit: contain;
 }
 
 .eyebrow {
@@ -77,11 +73,17 @@
 }
 
 .processing,
-.completed,
 .error-card {
   max-width: 610px;
   margin: 0 auto;
   text-align: center;
+}
+
+.completed {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  text-align: left;
 }
 
 .processing h2,
@@ -126,6 +128,7 @@
   align-items: center;
   gap: 20px;
   margin-bottom: 28px;
+  min-width: 0;
 }
 
 .section-header h2 {
@@ -234,6 +237,7 @@
   display: grid;
   grid-template-columns: 1fr 130px 130px 1.5fr;
   gap: 14px;
+  min-width: 0;
 }
 
 .field {
@@ -348,6 +352,152 @@
   font-weight: 700;
 }
 
+.success-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #18794e;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.success-badge span {
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 7px;
+  background: #e8f7ed;
+  font-size: 13px;
+}
+
+.completed-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+  min-width: 0;
+}
+
+.completed-header h2 {
+  margin: 14px 0 6px;
+  font-size: 28px;
+}
+
+.completed-header p {
+  margin: 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.header-download {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.header-download span,
+.completed-actions span {
+  margin-left: 5px;
+  font-size: 16px;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: #f8f9fc;
+}
+
+.day-column {
+  min-width: 0;
+  min-height: 275px;
+  border-right: 1px solid var(--line);
+}
+
+.day-column:last-child {
+  border-right: 0;
+}
+
+.day-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 13px;
+  border-bottom: 1px solid var(--line);
+  background: white;
+}
+
+.day-heading span {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.day-heading strong {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.day-events {
+  display: flex;
+  min-height: 215px;
+  flex-direction: column;
+  gap: 9px;
+  padding: 12px;
+}
+
+.calendar-event {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 11px;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-soft);
+}
+
+.calendar-event strong {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.calendar-event span {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.event-time {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.empty-day {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  color: #a4adbb;
+  font-size: 11px;
+}
+
+.completed-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
 .success-icon {
   background: #e8f7ed;
   color: #18794e;
@@ -358,19 +508,19 @@
   color: #b42318;
 }
 
-.completed .confirm-button,
-.completed .secondary-button {
-  display: block;
-  width: 100%;
-  margin-top: 14px;
-}
-
-.completed .confirm-button {
-  margin-top: 24px;
-}
-
 @media (max-width: 850px) {
   .entry-fields { grid-template-columns: 1fr 1fr; }
+
+  .calendar {
+    grid-template-columns: repeat(7, minmax(110px, 1fr));
+    overflow-x: auto;
+  }
+
+  .day-heading,
+  .day-events {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -382,4 +532,22 @@
   .actions { flex-direction: column-reverse; }
   .confirm-button,
   .secondary-button { width: 100%; }
+
+  .calendar {
+    overflow-x: auto;
+    grid-template-columns: repeat(7, minmax(145px, 1fr));
+  }
+
+  .completed-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-download {
+    width: 100%;
+  }
+
+  .completed-actions {
+    flex-direction: column-reverse;
+  }
 }

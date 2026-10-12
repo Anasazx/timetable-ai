@@ -30,6 +30,8 @@ public class TimetableController {
 
     private final ExtractionJobService extractionJobService;
     private final ObjectMapper objectMapper;
+    private final IcsCalendarService icsCalendarService;
+
 
     @PostMapping(value = "/extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ExtractionJobResponse> extractTimetable(
@@ -101,8 +103,7 @@ public class TimetableController {
 
         if (job.getResultJson() != null) {
 
-            result =
-                    objectMapper.readValue(
+            result = objectMapper.readValue(
                             job.getResultJson(),
                             AiTimetableResponse.class
                     );
@@ -137,11 +138,6 @@ public class TimetableController {
         );
     }
 
-
-
-
-
-    private final IcsCalendarService icsCalendarService;
 
 
     @GetMapping(

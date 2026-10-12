@@ -5,7 +5,7 @@
     <header class="header">
 
       <div class="logo">
-        <span class="logo-mark">T</span>
+        <img class="brand-logo" src="logo.png" alt="" />
         <span>Timetable <em>AI</em></span>
       </div>
 
@@ -409,36 +409,55 @@
     @if (status?.status === 'COMPLETED') {
 
       <section class="card completed">
-
-        <div class="success-icon">
-          ✓
+        <div class="completed-header">
+          <div>
+            <div class="success-badge"><span>✓</span> Timetable confirmed</div>
+            <h2>Your weekly schedule</h2>
+            <p>Here’s a preview of the recurring events that will be added to your calendar.</p>
+          </div>
+          <button type="button" class="confirm-button header-download" (click)="downloadCalendar()">
+            Download .ics <span>↓</span>
+          </button>
         </div>
 
-        <h2>
-          Timetable confirmed
-        </h2>
+        <div class="calendar" role="grid" aria-label="Weekly timetable">
+          @for (day of calendarDays; track day.key) {
+            <div class="day-column" role="row">
+              <div class="day-heading">
+                <span>{{ day.shortLabel }}</span>
+                <strong>{{ day.label }}</strong>
+              </div>
 
-        <p>
-          Your timetable has been validated and your recurring
-          calendar is ready.
-        </p>
+              <div class="day-events">
+                @for (entry of getEntriesForDay(day.key); track $index) {
+                  <article class="calendar-event">
+                    <div class="event-time">{{ entry.start_time }} – {{ entry.end_time }}</div>
+                    <strong>{{ entry.subject || 'Untitled class' }}</strong>
+                    @if (entry.teacher) {
+                      <span>✦ {{ entry.teacher }}</span>
+                    }
+                    @if (entry.room) {
+                      <span>⌂ {{ entry.room }}</span>
+                    }
+                  </article>
+                }
 
-        <button
-          type="button"
-          class="confirm-button"
-          (click)="downloadCalendar()"
-        >
-          Download calendar
-        </button>
+                @if (getEntriesForDay(day.key).length === 0) {
+                  <div class="empty-day">No classes</div>
+                }
+              </div>
+            </div>
+          }
+        </div>
 
-        <button
-          type="button"
-          class="secondary-button"
-          (click)="backToUpload()"
-        >
-          Create another timetable
-        </button>
-
+        <div class="completed-actions">
+          <button type="button" class="secondary-button" (click)="backToUpload()">
+            Create another timetable
+          </button>
+          <button type="button" class="confirm-button" (click)="downloadCalendar()">
+            Download calendar <span>↓</span>
+          </button>
+        </div>
       </section>
 
     }

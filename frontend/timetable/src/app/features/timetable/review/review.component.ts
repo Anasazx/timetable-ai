@@ -33,16 +33,26 @@ export class ReviewComponent implements OnInit, OnDestroy {
 
   status: ExtractionJobStatusResponse | null = null;
 
+
   entries: AiTimetableEntry[] = [];
 
   isConfirming = false;
 
   errorMessage: string | null = null;
 
+  readonly calendarDays = [
+    { key: 'Lundi', label: 'Monday', shortLabel: 'MON' },
+    { key: 'Mardi', label: 'Tuesday', shortLabel: 'TUE' },
+    { key: 'Mercredi', label: 'Wednesday', shortLabel: 'WED' },
+    { key: 'Jeudi', label: 'Thursday', shortLabel: 'THU' },
+    { key: 'Vendredi', label: 'Friday', shortLabel: 'FRI' },
+    { key: 'Samedi', label: 'Saturday', shortLabel: 'SAT' },
+    { key: 'Dimanche', label: 'Sunday', shortLabel: 'SUN' }
+  ];
+
   ngOnInit(): void {
 
-    this.jobId =
-      this.route.snapshot.paramMap.get('jobId') ?? '';
+    this.jobId = this.route.snapshot.paramMap.get('jobId') ?? '';
 
     if (!this.jobId) {
 
@@ -51,6 +61,11 @@ export class ReviewComponent implements OnInit, OnDestroy {
 
       return;
     }
+    
+    if (this.status) {
+      this.status.status = 'PROCESSING';
+    }
+
 
     this.startPolling();
   }
@@ -92,6 +107,11 @@ export class ReviewComponent implements OnInit, OnDestroy {
           }
 
           if (response.status === 'COMPLETED') {
+
+            this.entries =
+              response.result?.entries
+                ? structuredClone(response.result.entries)
+                : this.entries;
 
             this.pollingSubscription?.unsubscribe();
 
@@ -218,6 +238,11 @@ export class ReviewComponent implements OnInit, OnDestroy {
           this.isConfirming = false;
 
           if (response.status === 'COMPLETED') {
+            this.entries =
+              response.result?.entries
+                ? structuredClone(response.result.entries)
+                : this.entries;
+
             return;
           }
 
@@ -250,6 +275,14 @@ export class ReviewComponent implements OnInit, OnDestroy {
 
     window.location.href =
       this.api.getCalendarUrl(this.jobId);
+  }
+
+  getEntriesForDay(day: string): AiTimetableEntry[] {
+    return this.entries
+      .filter(entry => entry.day.toLowerCase() === day.toLowerCase())
+      .sort((first, second) =>
+        first.start_time.localeCompare(second.start_time)
+      );
   }
 
   backToUpload(): void {
